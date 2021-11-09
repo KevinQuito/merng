@@ -84,7 +84,7 @@ module.exports = {
         throw new UserInputError("Username is taken", {
           // this user object is going to be used later on for the front end to display the errors on the form
           errors: {
-            username: "This username is taken",
+            username: "This username is taken"
           },
         });
       }
@@ -96,7 +96,7 @@ module.exports = {
         email,
         username,
         password,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date().toISOString()
       });
       const res = await newUser.save(); // this saves to the database
       // now we need to return this data to the user, but before that we need to create a token for the user

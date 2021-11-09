@@ -1,4 +1,6 @@
 const { ApolloServer } = require('apollo-server'); // brings in the apollo server
+const { PubSub } = require('graphql-subscriptions'); // PubSub means publish subscribe
+
 // const gql = require('graphql-tag');
 const mongoose = require('mongoose'); // mongoose is ORM library, object-relational mapper, which lets us interface with the mongoDB database that we're using
 
@@ -10,6 +12,8 @@ const resolvers = require('./graphql/resolvers');
 const typeDefs = require('./graphql/typeDefs');
 // destructure MONGODB
 const { MONGODB } = require('./config.js');
+
+const pubsub = new PubSub(); // we can just pass in pubSub in our context now, so we can use it in our resolvers
 
 // const typeDefs = gql`
 //     type Post{
@@ -46,7 +50,8 @@ const { MONGODB } = require('./config.js');
 // we need to set up our apollo server
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context: ({ req }) => ({ req, pubsub })
 });
 
 mongoose.connect(MONGODB, { useNewUrlParser: true})
