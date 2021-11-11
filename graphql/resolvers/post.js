@@ -74,6 +74,11 @@ module.exports = {
     },
     async likePost(_, { postId }, context) {
       const { username } = checkAuth(context);
+      
+      // server validation
+      if (args.body.trim() === ''){
+        throw new Error('Post body must not be empty');
+      }
 
       const post = await Post.findById(postId);
       if (post) {
