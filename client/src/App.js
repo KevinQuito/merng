@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import "semantic-ui-css/semantic.min.css";
@@ -14,14 +14,17 @@ import Register from "./pages/Register";
 function App() {
   return (
     <Router>
-      <Container>
-        <MenuBar />
-        <Routes exact path="/" component={Home} />
-        <Routes exact path="/login" component={Login} />
-        <Routes exact path="/register" component={Register} />
-      </Container>
+        <Container>
+          <MenuBar />
+          <Routes>
+            <Route exact path="/" element={<Home/>}/>
+            <Route exact path="/login" element={<Login/>}/>
+            <Route exact path="/register" element={<Register/>}/>
+          </Routes>
+        </Container>
     </Router>
   );
 }
+
 
 export default App;

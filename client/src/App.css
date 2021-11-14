@@ -1,1 +1,8 @@
 /* Deleted everything in this App.css file since we're going to be using SemanticUI */
+/* page-title is just to center the Recent Post for Home.js */
+.page-title{
+    display:block !important;
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 10px;
+}
