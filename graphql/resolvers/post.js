@@ -30,7 +30,7 @@ module.exports = {
         }
         // TODO: for some reason it's not catching the error Post not found
       } catch {
-        throw new Error("Post not found");
+        throw new Error(err);
       }
     },
   },

@@ -6,3 +6,9 @@
     font-size: 2rem;
     margin-top: 10px;
 }
+
+.form-container{
+    width: 400px;
+    /* we'll say margin: auto so that it's pushed to the middle */
+    margin: auto;
+}
