@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 import { useNavigate } from "react-router-dom"; // in react-router v6, you need to use navigate instead of props.history.push
 
+import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
 
 function Login() {
   const navigate = useNavigate();
 
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
@@ -23,10 +25,13 @@ function Login() {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     // the function update will be triggered if the mutation is successfully executed
     // also we don't need to use proxy, so we'll just use _ instead
-    update(_, result) {
+    // also it doesn't make sense to call it login, so from result we can destructure data/login/userData. useData is an alias
+    update(_, { data: { login: userData}}) {
+      // we need to pass it result.data.login so it actually uses the user's data and saves the likes/comments and redirects the menu bar from login to home
+      // we need to get that context in order to do the above statement
+      context.login(userData);
       // after the registered user was successful, we'll need to redirect the user to the homepage
       // props.history.push('/') the code to the left will not work, use the code below instead
-      // props.history.push('/')
       navigate("/");
     },
     // after the update, we need to handle the errors
