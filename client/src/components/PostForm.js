@@ -24,8 +24,18 @@ function PostForm() {
       });
       // inside const data, the cache/our response is inside the createPost, so we need to edit the createPost entry result.data.createPost
       // we need to persist this, so we'll use proxy.writeQuery
-      proxy.writeQuery({ query: FETCH_POSTS_QUERY, data: { getPosts: [result.data.createPost, ...data.getPosts]}});
+      proxy.writeQuery({
+        query: FETCH_POSTS_QUERY,
+        // instead of writing it like this :       data.getPosts = [result.data.createPost, ...data.getPosts];
+        //                                           proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
+        // write it like this : data: { getPosts: [result.data.createPost, ...data.getPosts] },
+        data: { getPosts: [result.data.createPost, ...data.getPosts] },
+      });
       values.body = "";
+    },
+    // need onError, so that when a post is empty and sent, the webpage doesn't automatically go to the webpage and show the error, it should just say it in tiny block
+    onError(err) {
+      console.log(err);
     },
   });
 
@@ -34,20 +44,31 @@ function PostForm() {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <h2>Create a post:</h2>
-      <Form.Field>
-        <Form.Input
-          placeholder="Hi World"
-          name="body"
-          onChange={onChange}
-          value={values.body}
-        />
-        <Button type="submit" color="olive">
-          Submit
-        </Button>
-      </Form.Field>
-    </Form>
+    // <> </> is shorthand for fragment, which is necessary in this case because we can't put two sibling elements in one component
+    <>
+      <Form onSubmit={onSubmit}>
+        <h2>Create a post:</h2>
+        <Form.Field>
+          <Form.Input
+            placeholder="Hi World"
+            name="body"
+            onChange={onChange}
+            value={values.body}
+            error={error ? true : false} // this just makes it red if the error is true
+          />
+          <Button type="submit" color="olive">
+            Submit
+          </Button>
+        </Form.Field>
+      </Form>
+      {error && (
+        <div className="ui error message" style={{ marginBottom: 20 }}>
+          <ul className="list">
+            <li>{error.graphQLErrors[0].message}</li>
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 

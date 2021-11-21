@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { Grid } from "semantic-ui-react";
+import { Grid, Transition } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
 import PostCard from "../components/PostCard";
@@ -35,13 +35,15 @@ function Home() {
         ) : (
           // the getPosts: posts above could be null because the data itself is not populated, so we first need to check if it's truthy
           // posts && posts.map(post => ) will loops through it each post and return
-          posts &&
-          posts.map((post) => (
-            // we'll use key={post.id} since that's unique
-            <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-              <PostCard post={post} />
-            </Grid.Column>
-          ))
+          <Transition.Group>
+            {posts &&
+              posts.map((post) => (
+                // we'll use key={post.id} since that's unique
+                <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                  <PostCard post={post} />
+                </Grid.Column>
+              ))}
+          </Transition.Group>
         )}
       </Grid.Row>
     </Grid>

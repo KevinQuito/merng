@@ -12,6 +12,7 @@ import MenuBar from "./components/MenuBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import SinglePost from "./pages/SinglePost";
 
 // MenuBar will be on the page regardless of what page we're in, so we don't need to put an exact path
 function App() {
@@ -36,7 +37,8 @@ function App() {
             {/* We use authroute here instead of route, so that if the user is logged in and tries to access the login/register pages using the web address,
                 then we'll redirect them to the home page */}
             <Route path="/login" element={<AuthRoute><Login /></AuthRoute>} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/register" element={<AuthRoute><Register /></AuthRoute>} />
+            <Route path="/posts/:postId" element={<SinglePost />} />
           </Routes>
         </Container>
       </Router>
