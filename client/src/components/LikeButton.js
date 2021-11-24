@@ -6,6 +6,8 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Button, Label, Icon } from "semantic-ui-react";
 
+import MyPopup from "../util/MyPopup";
+
 function LikeButton({ user, post: { id, likes, likeCount } }) {
   const [liked, setLiked] = useState(false);
 
@@ -20,7 +22,7 @@ function LikeButton({ user, post: { id, likes, likeCount } }) {
 
   const [likePost] = useMutation(LIKE_POST_MUTATION, {
     variables: { postId: id },
-    errorPolicy: 'ignore'
+    errorPolicy: "ignore",
   });
 
   const likeButton = user ? (
@@ -36,28 +38,30 @@ function LikeButton({ user, post: { id, likes, likeCount } }) {
       </Button>
     )
   ) : (
-      // if the user isn't logged in and tried to like a post, then it will Link to the login page, so the user can log in
+    // if the user isn't logged in and tried to like a post, then it will Link to the login page, so the user can log in
     <Button as={Link} to={`/login`} color="olive" basic>
       <Icon name="heart" />
     </Button>
   );
 
   return (
-    <Button as="div" labelPosition="right" onClick={likePost}>
-      {likeButton}
-      <Label basic color="olive" pointing="left">
-        {likeCount}
-      </Label>
-    </Button>
+    <MyPopup content={liked ? "Unlike" : "Like"}>
+      <Button as="div" labelPosition="right" onClick={likePost}>
+        {likeButton}
+        <Label basic color="olive" pointing="left">
+          {likeCount}
+        </Label>
+      </Button>
+    </MyPopup>
   );
 }
 
 const LIKE_POST_MUTATION = gql`
   mutation likePost($postId: ID!) {
     likePost(postId: $postId) {
-        # the LIKE_POST_MUTATION is updating the cache without us having to say proxy.writeQuery like in PostForm.js because in our mutation we are specifying the
-        # id of the post that we're getting back, so we're getting back a resource of Type post, and Apollo is smart enough to know that it should update the post
-        # that we have with that id and any of the fields that we have received, so it does it automatically 
+      # the LIKE_POST_MUTATION is updating the cache without us having to say proxy.writeQuery like in PostForm.js because in our mutation we are specifying the
+      # id of the post that we're getting back, so we're getting back a resource of Type post, and Apollo is smart enough to know that it should update the post
+      # that we have with that id and any of the fields that we have received, so it does it automatically
       id
       likes {
         id

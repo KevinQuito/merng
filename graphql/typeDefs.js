@@ -55,7 +55,7 @@ module.exports = gql`
         login(username: String!, password: String!): User!
         createPost(body: String!): Post!
         deletePost(postId: ID!): String!
-        createComment(postId: String!, body: String!): Post!
+        createComment(postId: ID!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post! # can take th commentId, but taking the postId allows to check if that post is up at all or not
         likePost(postId: ID!): Post! # this will return a type : Post, also notice that we don't have an unlikePost because this likePost will work as a toggle, so if we like that post then we can unlike it and if we unlike that post, then we can like it
     }
